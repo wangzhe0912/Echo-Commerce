@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # MongoDB 数据库
+  mongo:
+    image: mongo:7.0
+    container_name: echo-commerce-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: echo_commerce
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - echo-commerce-network
+
+  # 后端 API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: echo-commerce-backend
+    restart: unless-stopped
+    environment:
+      - MONGODB_URL=mongodb://admin:password123@mongo:27017/echo_commerce?authSource=admin
+      - DATABASE_NAME=echo_commerce
+      - SECRET_KEY=your-super-secret-key-for-production-change-this
+      - DEBUG=false
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend:/app
+    networks:
+      - echo-commerce-network
+
+  # 前端应用
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: echo-commerce-frontend
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - echo-commerce-network
+
+volumes:
+  mongo_data:
+
+networks:
+  echo-commerce-network:
+    driver: bridge 
