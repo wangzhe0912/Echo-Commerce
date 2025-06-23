@@ -23,7 +23,7 @@ export default function Hero() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link 
-              href="/auth/register" 
+              href="/register" 
               className="border border-white text-white hover:bg-white hover:text-primary-600 font-medium py-3 px-6 rounded-md transition-colors"
             >
               立即注册

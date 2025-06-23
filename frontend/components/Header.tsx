@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { ShoppingCart, User, LogOut, Package, Home } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Package, Home, Grid3X3, ClipboardList } from 'lucide-react';
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -26,6 +26,14 @@ export default function Header() {
               <Home className="h-4 w-4" />
               <span>首页</span>
             </Link>
+            
+            <Link 
+              href="/products" 
+              className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors"
+            >
+              <Grid3X3 className="h-4 w-4" />
+              <span>商品</span>
+            </Link>
 
             {user ? (
               <div className="flex items-center space-x-4">
@@ -41,7 +49,7 @@ export default function Header() {
                   href="/orders" 
                   className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors"
                 >
-                  <Package className="h-4 w-4" />
+                  <ClipboardList className="h-4 w-4" />
                   <span>我的订单</span>
                 </Link>
 
@@ -69,13 +77,13 @@ export default function Header() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link 
-                  href="/auth/login" 
+                  href="/login" 
                   className="text-gray-700 hover:text-primary-600 transition-colors"
                 >
                   登录
                 </Link>
                 <Link 
-                  href="/auth/register" 
+                  href="/register" 
                   className="btn-primary"
                 >
                   注册

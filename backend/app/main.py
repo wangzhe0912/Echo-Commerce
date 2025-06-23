@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from app.core.config import settings
 from app.api import auth, users, products, cart, orders
-from app.core.database import database
+from app.core.database import connect_to_mongo, close_mongo_connection
 
 app = FastAPI(
     title="Echo-Commerce API",
@@ -23,11 +23,11 @@ app.add_middleware(
 # 数据库连接事件
 @app.on_event("startup")
 async def startup_db_client():
-    await database.connect_to_mongo()
+    await connect_to_mongo()
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    await database.close_mongo_connection()
+    await close_mongo_connection()
 
 # 根路径重定向到API文档
 @app.get("/")

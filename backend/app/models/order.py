@@ -3,21 +3,7 @@ from pydantic import BaseModel, Field
 from bson import ObjectId
 from datetime import datetime
 from enum import Enum
-
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid objectid")
-        return ObjectId(v)
-
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(type="string")
+from .base import PyObjectId
 
 class OrderStatus(str, Enum):
     PENDING = "pending"
@@ -40,10 +26,11 @@ class OrderItem(OrderItemBase):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     order_id: str = Field(..., description="订单ID")
     
-    class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+    model_config = {
+        "populate_by_name": True,
+        "arbitrary_types_allowed": True,
+        "json_encoders": {ObjectId: str}
+    }
 
 class Order(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
@@ -53,10 +40,11 @@ class Order(BaseModel):
     status: OrderStatus = Field(default=OrderStatus.PAID, description="订单状态")
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
-    class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+    model_config = {
+        "populate_by_name": True,
+        "arbitrary_types_allowed": True,
+        "json_encoders": {ObjectId: str}
+    }
 
 class OrderResponse(BaseModel):
     id: str
@@ -66,8 +54,9 @@ class OrderResponse(BaseModel):
     created_at: datetime
     items: List[OrderItemBase]
     
-    class Config:
-        json_encoders = {ObjectId: str}
+    model_config = {
+        "json_encoders": {ObjectId: str}
+    }
 
 class OrderListResponse(BaseModel):
     id: str
@@ -77,5 +66,6 @@ class OrderListResponse(BaseModel):
     created_at: datetime
     item_count: int
     
-    class Config:
-        json_encoders = {ObjectId: str} 
+    model_config = {
+        "json_encoders": {ObjectId: str}
+    } 

@@ -2,21 +2,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 from bson import ObjectId
 from datetime import datetime
-
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid objectid")
-        return ObjectId(v)
-
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(type="string")
+from .base import PyObjectId
 
 class ProductBase(BaseModel):
     name: str = Field(..., description="商品名称")
@@ -40,10 +26,11 @@ class Product(ProductBase):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = None
     
-    class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+    model_config = {
+        "populate_by_name": True,
+        "arbitrary_types_allowed": True,
+        "json_encoders": {ObjectId: str}
+    }
 
 class ProductResponse(BaseModel):
     id: str
@@ -55,5 +42,6 @@ class ProductResponse(BaseModel):
     created_at: datetime
     updated_at: Optional[datetime] = None
     
-    class Config:
-        json_encoders = {ObjectId: str} 
+    model_config = {
+        "json_encoders": {ObjectId: str}
+    } 
