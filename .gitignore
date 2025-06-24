@@ -212,3 +212,59 @@ package-lock.json
 .vscode/
 *.swp
 *.swo
+
+# 企业版配置和敏感文件
+backend/.env
+backend/.env.enterprise
+backend/.env.production
+backend/logs/
+backend/ssl/
+backend/certs/
+
+# 企业版 Docker 配置
+docker-compose.enterprise.override.yml
+docker-compose.production.yml
+
+# 企业版 Nginx 配置
+nginx/ssl/
+nginx/enterprise.conf
+nginx/production.conf
+
+# 企业版部署脚本
+scripts/deploy-enterprise.sh
+scripts/deploy-production.sh
+
+# 企业版数据备份
+backups/
+enterprise-data/
+
+# 企业版监控和日志
+monitoring/
+logs/
+*.log
+
+# 企业版证书和密钥
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# 企业版临时文件
+temp/
+tmp/
+*.tmp
+
+# 企业版缓存
+.cache/
+cache/
+
+# 企业版配置文件（本地覆盖）
+config/local/
+config/enterprise/
+DEPLOYMENT.md
+backend/Dockerfile.enterprise
+frontend/Dockerfile.enterprise
+backend/env.enterprise.template
+docker-compose.enterprise.yml
+scripts/deploy.sh
