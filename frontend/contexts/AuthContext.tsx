@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { authAPI } from '@/lib/api';
 import type { User } from '@/types';
-import toast from 'react-hot-toast';
+import { showSuccess, showError } from '@/lib/notifications';
 
 interface AuthContextType {
   user: User | null;
@@ -43,11 +43,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await authAPI.login(username, password);
       Cookies.set('token', response.access_token, { expires: 7 });
       setUser(response.user);
-      toast.success('登录成功！');
+      showSuccess('登录成功！', { duration: 2000 });
       return true;
     } catch (error: any) {
       console.error('Login failed:', error);
-      toast.error(error.response?.data?.detail || '登录失败');
+      showError(error.response?.data?.detail || '登录失败');
       return false;
     }
   };
@@ -57,11 +57,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await authAPI.register(username, password);
       Cookies.set('token', response.access_token, { expires: 7 });
       setUser(response.user);
-      toast.success('注册成功！');
+      showSuccess('注册成功！', { duration: 2000 });
       return true;
     } catch (error: any) {
       console.error('Registration failed:', error);
-      toast.error(error.response?.data?.detail || '注册失败');
+      let errorMessage = '注册失败';
+      
+      if (error.response?.data?.detail) {
+        // 处理单个错误信息
+        if (typeof error.response.data.detail === 'string') {
+          errorMessage = error.response.data.detail;
+        } else if (Array.isArray(error.response.data.detail)) {
+          // 处理验证错误数组
+          errorMessage = error.response.data.detail.map((err: any) => err.msg || err).join(', ');
+        }
+      }
+      
+      showError(errorMessage);
       return false;
     }
   };
@@ -69,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     Cookies.remove('token');
     setUser(null);
-    toast.success('已退出登录');
+    showSuccess('已退出登录', { duration: 2000 });
   };
 
   return (

@@ -205,3 +205,10 @@ yarn-error.log*
 
 # Package lock files
 package-lock.json
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo

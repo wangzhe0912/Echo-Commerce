@@ -6,6 +6,9 @@ import { Cart } from '@/types'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { showError, showSuccess, showWarning, showOrderNotification, showLoading, updateNotification } from '@/lib/notifications'
+import Button, { SecondaryButton } from '@/components/Button'
+import { ShoppingBag, Trash2 } from 'lucide-react'
 
 export default function CartPage() {
   const [cart, setCart] = useState<Cart | null>(null)
@@ -45,8 +48,9 @@ export default function CartPage() {
     try {
       await cartAPI.updateCartItem(itemId, quantity)
       await fetchCart()
+      showSuccess('商品数量已更新', { duration: 1500 })
     } catch (err) {
-      alert('更新商品数量失败')
+      showError('更新商品数量失败')
       console.error('Error updating quantity:', err)
     }
   }
@@ -55,26 +59,30 @@ export default function CartPage() {
     try {
       await cartAPI.removeFromCart(itemId)
       await fetchCart()
+      showSuccess('商品已从购物车移除', { duration: 1500 })
     } catch (err) {
-      alert('删除商品失败')
+      showError('删除商品失败')
       console.error('Error removing item:', err)
     }
   }
 
   const checkout = async () => {
     if (!cart || cart.items.length === 0) {
-      alert('购物车为空')
+      showWarning('购物车为空，请先添加商品')
       return
     }
 
+    const loadingToast = showLoading('正在创建订单...')
+    
     try {
       setIsCheckingOut(true)
       const order = await orderAPI.createOrder()
-      alert(`订单创建成功！订单号：${order.order_number}`)
+      updateNotification(loadingToast, '订单创建成功！', 'success')
+      showOrderNotification(order.order_number, 'created')
       await fetchCart() // 刷新购物车
       router.push('/orders')
     } catch (err) {
-      alert('创建订单失败')
+      updateNotification(loadingToast, '创建订单失败', 'error')
       console.error('Error creating order:', err)
     } finally {
       setIsCheckingOut(false)
@@ -193,17 +201,28 @@ export default function CartPage() {
             <div className="flex space-x-4">
               <Link
                 href="/products"
-                className="flex-1 py-3 px-4 border border-gray-300 rounded-md text-center text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex-1"
               >
-                继续购物
+                <Button
+                  variant="outline"
+                  size="lg"
+                  fullWidth
+                  icon={<ShoppingBag className="w-5 h-5" />}
+                >
+                  继续购物
+                </Button>
               </Link>
-              <button
+              <Button
                 onClick={checkout}
-                disabled={isCheckingOut}
-                className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                loading={isCheckingOut}
+                loadingText="处理中..."
+                size="lg"
+                fullWidth
+                icon={<ShoppingBag className="w-5 h-5" />}
+                className="flex-1"
               >
-                {isCheckingOut ? '处理中...' : '结算'}
-              </button>
+                结算
+              </Button>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ from datetime import datetime
 from .base import PyObjectId
 
 class UserBase(BaseModel):
-    username: str = Field(..., description="用户名", min_length=6, max_length=20)
+    username: str = Field(..., description="用户名", min_length=6, max_length=120)
 
 class UserCreate(UserBase):
     password: str = Field(..., description="密码", min_length=6)

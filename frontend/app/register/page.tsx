@@ -39,8 +39,22 @@ export default function RegisterPage() {
         setError('注册失败，请重试')
       }
     } catch (err: any) {
-      setError(err.message || '注册失败，请重试')
-      console.error('Register error:', err)
+      let errorMessage = '注册失败，请重试';
+      
+      if (err.response?.data?.detail) {
+        if (typeof err.response.data.detail === 'string') {
+          errorMessage = err.response.data.detail;
+        } else if (Array.isArray(err.response.data.detail)) {
+          errorMessage = err.response.data.detail.map((error: any) => 
+            error.msg || error.message || String(error)
+          ).join(', ');
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
+      console.error('Register error:', err);
     } finally {
       setIsLoading(false)
     }

@@ -60,7 +60,7 @@ export default function ProductList() {
           <div className="card hover:shadow-lg transition-shadow cursor-pointer">
             <div className="relative h-48 rounded-t-lg overflow-hidden">
               <Image
-                src={product.image_url}
+                src={product.image_url || 'https://via.placeholder.com/300x200/e5e7eb/9ca3af?text=暂无图片'}
                 alt={product.name}
                 fill
                 className="object-cover"
@@ -80,7 +80,7 @@ export default function ProductList() {
                 {product.description}
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-lg font-bold text-primary-600">
+                <span className="text-lg font-bold text-blue-600">
                   ¥{product.price.toFixed(2)}
                 </span>
                 <div className="flex items-center space-x-1">

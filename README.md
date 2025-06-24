@@ -76,11 +76,30 @@ docker-compose up -d
 - 后端 API：http://localhost:8000
 - API 文档：http://localhost:8000/docs
 
+### 数据初始化
+
+项目启动时会自动检查并初始化必要数据：
+- 管理员账户
+- 示例商品数据
+
+如需手动初始化数据：
+```bash
+# 使用 Make 命令
+make init-db
+
+# 或直接运行脚本
+cd backend && python init_db.py
+```
+
 ### 默认账户
 
 **管理员账户**
 - 用户名：`admin`
 - 密码：`admin123`
+
+**示例用户账户**
+- 用户名：`demo123` 
+- 密码：`123456`
 
 ## 📁 项目结构
 

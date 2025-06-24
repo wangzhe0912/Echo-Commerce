@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import HTTPAuthorizationCredentials
+from datetime import datetime
 from app.models.user import UserCreate, UserLogin, Token, User, UserResponse
 from app.core.security import get_password_hash, verify_password, create_access_token, verify_token
 from app.core.database import get_users_collection
@@ -29,6 +30,7 @@ async def register(user: UserCreate):
     user_dict["hashed_password"] = get_password_hash(user.password)
     del user_dict["password"]
     user_dict["is_admin"] = False
+    user_dict["created_at"] = datetime.utcnow()
     
     result = await users_collection.insert_one(user_dict)
     created_user = await users_collection.find_one({"_id": result.inserted_id})
