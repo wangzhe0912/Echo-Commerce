@@ -34,6 +34,7 @@ async def check_and_init_data():
             
         # 检查是否需要添加示例商品
         product_count = await db.products.count_documents({})
+        print(product_count)
         if product_count == 0:
             print("🛍️ 检测到没有商品数据，正在添加示例商品...")
             sample_products = [
@@ -130,4 +131,4 @@ app.include_router(admin.router, prefix="/api/admin", tags=["管理员"])
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
