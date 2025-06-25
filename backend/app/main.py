@@ -42,7 +42,7 @@ async def check_and_init_data():
                     "description": "苹果最新旗舰手机，配备 A17 Pro 芯片，钛金属设计",
                     "price": 7999.00,
                     "stock": 50,
-                    "image_url": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&h=600&fit=crop",
+                    "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1592750475338-74b7b21085ab.jpeg?w=600&h=600&fit=crop",
                     "created_at": datetime.utcnow()
                 },
                 {
@@ -50,7 +50,7 @@ async def check_and_init_data():
                     "description": "搭载 M3 芯片的专业笔记本电脑，适合开发和创作",
                     "price": 14999.00,
                     "stock": 30,
-                    "image_url": "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&h=600&fit=crop",
+                    "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1541807084-5c52b6b3adef.jpeg?w=600&h=600&fit=crop",
                     "created_at": datetime.utcnow()
                 },
                 {
@@ -58,7 +58,7 @@ async def check_and_init_data():
                     "description": "主动降噪无线耳机，带有空间音频功能",
                     "price": 1899.00,
                     "stock": 100,
-                    "image_url": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=600&h=600&fit=crop",
+                    "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1572569511254-d8f925fe2cbb.jpeg?w=600&h=600&fit=crop",
                     "created_at": datetime.utcnow()
                 },
                 {
@@ -66,7 +66,7 @@ async def check_and_init_data():
                     "description": "轻薄强大的平板电脑，支持 Apple Pencil",
                     "price": 4399.00,
                     "stock": 40,
-                    "image_url": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=600&fit=crop",
+                    "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1544244015-0df4b3ffc6b0.jpeg?w=600&h=600&fit=crop",
                     "created_at": datetime.utcnow()
                 },
                 {
@@ -74,7 +74,7 @@ async def check_and_init_data():
                     "description": "任天堂游戏主机，OLED 屏幕版本",
                     "price": 2399.00,
                     "stock": 25,
-                    "image_url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop",
+                    "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1578662996442-48f60103fc96.jpeg?w=600&h=600&fit=crop",
                     "created_at": datetime.utcnow()
                 },
                 {
@@ -82,7 +82,7 @@ async def check_and_init_data():
                     "description": "索尼顶级降噪耳机，音质出色",
                     "price": 2399.00,
                     "stock": 35,
-                    "image_url": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&h=600&fit=crop",
+                    "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1583394838336-acd977736f90.jpeg?w=600&h=600&fit=crop",
                     "created_at": datetime.utcnow()
                 }
             ]

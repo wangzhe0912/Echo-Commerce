@@ -91,98 +91,50 @@ async def init_sample_products():
     sample_products = [
         {
             "name": "iPhone 15 Pro",
-            "description": "苹果最新旗舰手机，配备 A17 Pro 芯片，钛金属设计。拍照功能强大，支持 5G 网络，电池续航优秀。",
+            "description": "苹果最新旗舰手机，配备 A17 Pro 芯片，钛金属设计",
             "price": 7999.00,
             "stock": 50,
-            "image_url": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&h=600&fit=crop",
+            "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1592750475338-74b7b21085ab.jpeg?w=600&h=600&fit=crop",
             "created_at": datetime.utcnow()
         },
         {
             "name": "MacBook Pro 14英寸",
-            "description": "搭载 M3 芯片的专业笔记本电脑，适合开发和创作。配备 Liquid Retina XDR 显示屏，性能强劲。",
+            "description": "搭载 M3 芯片的专业笔记本电脑，适合开发和创作",
             "price": 14999.00,
             "stock": 30,
-            "image_url": "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&h=600&fit=crop",
+            "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1541807084-5c52b6b3adef.jpeg?w=600&h=600&fit=crop",
             "created_at": datetime.utcnow()
         },
         {
             "name": "AirPods Pro (第2代)",
-            "description": "主动降噪无线耳机，带有空间音频功能。自适应透明模式，个性化空间音频体验。",
+            "description": "主动降噪无线耳机，带有空间音频功能",
             "price": 1899.00,
             "stock": 100,
-            "image_url": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=600&h=600&fit=crop",
+            "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1572569511254-d8f925fe2cbb.jpeg?w=600&h=600&fit=crop",
             "created_at": datetime.utcnow()
         },
         {
             "name": "iPad Air",
-            "description": "轻薄强大的平板电脑，支持 Apple Pencil (第2代)。M1 芯片加持，适合学习和工作。",
+            "description": "轻薄强大的平板电脑，支持 Apple Pencil",
             "price": 4399.00,
             "stock": 40,
-            "image_url": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=600&fit=crop",
-            "created_at": datetime.utcnow()
-        },
-        {
-            "name": "Apple Watch Series 9",
-            "description": "智能手表，健康监测和运动追踪功能。心率监测、血氧检测、ECG 功能一应俱全。",
-            "price": 2999.00,
-            "stock": 60,
-            "image_url": "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&h=600&fit=crop",
+            "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1544244015-0df4b3ffc6b0.jpeg?w=600&h=600&fit=crop",
             "created_at": datetime.utcnow()
         },
         {
             "name": "Nintendo Switch OLED",
-            "description": "任天堂游戏主机，OLED 屏幕版本。随时随地畅玩游戏，支持掌机和主机模式。",
+            "description": "任天堂游戏主机，OLED 屏幕版本",
             "price": 2399.00,
             "stock": 25,
-            "image_url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop",
+            "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1578662996442-48f60103fc96.jpeg?w=600&h=600&fit=crop",
             "created_at": datetime.utcnow()
         },
         {
             "name": "Sony WH-1000XM5",
-            "description": "索尼顶级降噪耳机，音质出色。30小时续航，快充功能，通话清晰。",
+            "description": "索尼顶级降噪耳机，音质出色",
             "price": 2399.00,
             "stock": 35,
-            "image_url": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&h=600&fit=crop",
-            "created_at": datetime.utcnow()
-        },
-        {
-            "name": "小米13 Ultra",
-            "description": "徕卡影像旗舰手机，专业摄影体验。骁龙8 Gen2 处理器，120W 快充。",
-            "price": 5999.00,
-            "stock": 45,
-            "image_url": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop",
-            "created_at": datetime.utcnow()
-        },
-        {
-            "name": "Tesla Model 3 无线充电板",
-            "description": "特斯拉原装无线充电板，支持双设备同时充电。完美适配 Model 3/Y 中控台。",
-            "price": 1299.00,
-            "stock": 15,
-            "image_url": "https://images.unsplash.com/photo-1593941707882-a5bac6861d75?w=600&h=600&fit=crop",
-            "created_at": datetime.utcnow()
-        },
-        {
-            "name": "戴森 V15 Detect 吸尘器",
-            "description": "激光显尘科技，智能清洁检测。强劲吸力，多种吸头配置，适合全屋清洁。",
-            "price": 4690.00,
-            "stock": 20,
-            "image_url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop",
-            "created_at": datetime.utcnow()
-        },
-        {
-            "name": "罗技 MX Master 3S 鼠标",
-            "description": "专业无线鼠标，适合办公和设计。精准滚轮，多设备切换，70天续航。",
-            "price": 799.00,
-            "stock": 80,
-            "image_url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&h=600&fit=crop",
-            "created_at": datetime.utcnow()
-        },
-        {
-            "name": "Kindle Paperwhite",
-            "description": "电子书阅读器，6.8英寸显示屏，防水设计。护眼阅读，数周续航。",
-            "price": 998.00,
-            "stock": 55,
-            "image_url": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=600&fit=crop",
+            "image_url": "https://web-ui-tester.bj.bcebos.com/v1/public/public/photo-1583394838336-acd977736f90.jpeg?w=600&h=600&fit=crop",
             "created_at": datetime.utcnow()
         }
     ]
