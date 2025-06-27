@@ -5,13 +5,15 @@ interface LoadingSpinnerProps {
   color?: 'blue' | 'green' | 'red' | 'yellow' | 'gray';
   text?: string;
   className?: string;
+  fullscreen?: boolean;
 }
 
 export default function LoadingSpinner({ 
   size = 'md', 
   color = 'blue', 
   text, 
-  className = '' 
+  className = '',
+  fullscreen = false
 }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: 'h-4 w-4',
@@ -28,6 +30,16 @@ export default function LoadingSpinner({
     gray: 'border-gray-600'
   };
 
+  // 全屏模式
+  if (fullscreen) {
+    return (
+      <div className="flex justify-center items-center h-screen w-screen fixed top-0 left-0 bg-white z-50">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  // 内联模式
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <div className="relative">
@@ -47,13 +59,9 @@ export default function LoadingSpinner({
   );
 }
 
-// 页面级加载组件
-export function PageLoading({ text = '加载中...' }: { text?: string }) {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <LoadingSpinner size="lg" text={text} />
-    </div>
-  );
+// 导出一个专门用于页面加载的组件
+export function PageLoading({ text = "加载中..." }: { text?: string }) {
+  return <LoadingSpinner fullscreen={true} text={text} />;
 }
 
 // 卡片加载占位符

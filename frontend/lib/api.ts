@@ -32,8 +32,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      Cookies.remove('token');
-      window.location.href = '/login';
+      // 检查是否是登录或注册请求失败
+      const isAuthRequest = error.config?.url?.includes('/auth/login') || 
+                           error.config?.url?.includes('/auth/register');
+      
+      if (!isAuthRequest) {
+        // 只有非登录/注册请求的401错误才清除token并跳转
+        Cookies.remove('token');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

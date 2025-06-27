@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, useAuthActions } from '@/contexts/AuthContext';
 import { ShoppingCart, User, LogOut, Package, Home, Grid3X3, ClipboardList } from 'lucide-react';
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const { logout } = useAuthActions();
 
   return (
     <header className="bg-white shadow-md border-b">

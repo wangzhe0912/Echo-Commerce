@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useState, useEffect } from 'react'
+import { useAuth, useAuthActions } from '@/contexts/AuthContext'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -10,23 +10,40 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const { login } = useAuth()
+  const { login } = useAuthActions()
   const router = useRouter()
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
+    if (!username || !password) {
+      setError('请输入用户名和密码')
+      setIsLoading(false)
+      return
+    }
+
     try {
-      const success = await login(username, password)
-      if (success) {
-        router.push('/')
-      } else {
-        setError('登录失败，请检查用户名和密码')
+      await login(username, password)
+      router.push('/')
+    } catch (err: any) {
+      let errorMessage = '登录失败，请重试';
+      if (err.response?.data?.detail) {
+        if (typeof err.response.data.detail === 'string') {
+          errorMessage = err.response.data.detail;
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
       }
-    } catch (err) {
-      setError('登录失败，请检查用户名和密码')
+      setError(errorMessage);
       console.error('Login error:', err)
     } finally {
       setIsLoading(false)
@@ -49,7 +66,7 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
                 {error}
@@ -65,7 +82,6 @@ export default function LoginPage() {
                   id="username"
                   name="username"
                   type="text"
-                  required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -83,7 +99,6 @@ export default function LoginPage() {
                   id="password"
                   name="password"
                   type="password"
-                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"

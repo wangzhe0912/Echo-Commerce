@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useState, useEffect } from 'react'
+import { useAuth, useAuthActions } from '@/contexts/AuthContext'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -10,34 +10,49 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const { register } = useAuth()
+  const [errors, setErrors] = useState<{[key: string]: string}>({})
+  const { register } = useAuthActions()
   const router = useRouter()
+  const { user } = useAuth()
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
+
+  const validate = () => {
+    const newErrors: {[key: string]: string} = {}
+    if (!username) {
+      newErrors.username = '请输入用户名'
+    }
+    if (!password) {
+      newErrors.password = '请输入密码'
+    } else if (password.length < 6) {
+      newErrors.password = '密码长度至少6位'
+    }
+    if (!confirmPassword) {
+      newErrors.confirmPassword = '请再次输入密码'
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = '两次输入的密码不一致'
+    }
+    return newErrors
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const newErrors = validate()
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
     setIsLoading(true)
-    setError('')
-
-    if (password !== confirmPassword) {
-      setError('两次输入的密码不一致')
-      setIsLoading(false)
-      return
-    }
-
-    if (password.length < 6) {
-      setError('密码长度至少6位')
-      setIsLoading(false)
-      return
-    }
+    setErrors({})
 
     try {
-      const success = await register(username, password)
-      if (success) {
-        router.push('/')
-      } else {
-        setError('注册失败，请重试')
-      }
+      await register(username, password)
+      router.push('/')
     } catch (err: any) {
       let errorMessage = '注册失败，请重试';
       
@@ -49,11 +64,13 @@ export default function RegisterPage() {
             error.msg || error.message || String(error)
           ).join(', ');
         }
+        setErrors({ form: errorMessage });
       } else if (err.message) {
-        errorMessage = err.message;
+        setErrors({ form: err.message });
+      } else {
+        setErrors({ form: errorMessage });
       }
       
-      setError(errorMessage);
       console.error('Register error:', err);
     } finally {
       setIsLoading(false)
@@ -76,10 +93,10 @@ export default function RegisterPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                {error}
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            {errors.form && (
+              <div className="bg-red-50 border border-red-200 text-sm text-red-700 px-4 py-3 rounded">
+                {errors.form}
               </div>
             )}
             
@@ -92,13 +109,16 @@ export default function RegisterPage() {
                   id="username"
                   name="username"
                   type="text"
-                  required
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  onChange={(e) => {
+                    setUsername(e.target.value)
+                    if (errors.username) setErrors({...errors, username: ''})
+                  }}
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="请输入用户名"
                 />
               </div>
+              {errors.username && <p className="mt-2 text-sm text-red-600">{errors.username}</p>}
             </div>
 
             <div>
@@ -110,13 +130,16 @@ export default function RegisterPage() {
                   id="password"
                   name="password"
                   type="password"
-                  required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  onChange={(e) => {
+                    setPassword(e.target.value)
+                    if (errors.password) setErrors({...errors, password: ''})
+                  }}
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="至少6位密码"
                 />
               </div>
+              {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
             </div>
 
             <div>
@@ -128,13 +151,16 @@ export default function RegisterPage() {
                   id="confirmPassword"
                   name="confirmPassword"
                   type="password"
-                  required
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value)
+                    if (errors.confirmPassword) setErrors({...errors, confirmPassword: ''})
+                  }}
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="再次输入密码"
                 />
               </div>
+              {errors.confirmPassword && <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>}
             </div>
 
             <div>
